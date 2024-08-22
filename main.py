@@ -18,8 +18,11 @@ dp = Dispatcher()
 
 
 @dp.message(CommandStart())
-async def Starter():
-    pass
+async def Starter(message: Message) -> None:
+    text = f"""
+        Hello, {html.bold(message.from_user.full_name)}! I am here to download youtube videos for you! Just send an URL
+    """
+    await message.answer(text)
 
 
 async def main() -> None:
