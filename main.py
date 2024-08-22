@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import sys
-import os
+# import os
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -12,7 +12,7 @@ import json
 with open("config.json") as f:
     templates = json.load(f)
 
-Token = os.getenv(templates["Token"])
+Token = templates["Token"]
 
 dp = Dispatcher()
 
