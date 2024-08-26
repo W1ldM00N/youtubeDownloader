@@ -9,6 +9,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message
 import json
 
+# opening json file with configs
 with open("config.json") as f:
     templates = json.load(f)
 
@@ -17,6 +18,7 @@ Token = templates["Token"]
 dp = Dispatcher()
 
 
+# start command handler
 @dp.message(CommandStart())
 async def Starter(message: Message) -> None:
     text = f"""
@@ -25,6 +27,7 @@ async def Starter(message: Message) -> None:
     await message.answer(text)
 
 
+# every message handler
 @dp.message()
 async def get_link(message: Message) -> None:
     text = message.text
@@ -33,10 +36,12 @@ async def get_link(message: Message) -> None:
     print(url)
 
 
+# bot starter
 async def main() -> None:
     bot = Bot(token=Token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     await dp.start_polling(bot)
 
+# logging
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(main())
