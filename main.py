@@ -2,6 +2,7 @@ import asyncio
 import logging
 import sys
 import re
+from pytube import YouTube
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -33,7 +34,10 @@ async def get_link(message: Message) -> None:
     text = message.text
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
     url = re.findall(regex, text)
-    print(url)
+    yt = YouTube(url[0][0])
+    print(yt)
+    stream = yt.streams.first()
+    stream.download()
 
 
 # bot starter
