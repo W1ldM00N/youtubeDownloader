@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import sys
-# import os
+import re
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -23,6 +23,14 @@ async def Starter(message: Message) -> None:
         Hello, {html.bold(message.from_user.full_name)}! I am here to download youtube videos for you! Just send an URL
     """
     await message.answer(text)
+
+
+@dp.message()
+async def get_link(message: Message) -> None:
+    text = message.text
+    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+    url = re.findall(regex, text)
+    print(url)
 
 
 async def main() -> None:
