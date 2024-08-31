@@ -3,6 +3,8 @@ import logging
 import sys
 import os
 import re
+
+import pytube.exceptions
 from pytube import YouTube
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
@@ -26,39 +28,42 @@ async def video_downloader(callback_query: CallbackQuery) -> None:
     splitted_data = data.split("<>")
     code = splitted_data[0]
     url = splitted_data[1]
-    if code == 'mp3':
-        # downloading video using youTube link
-        yt = YouTube(url)
-        stream = yt.streams.get_audio_only()
-        audio_path = stream.download()
-        audio = FSInputFile(audio_path)
-        await callback_query.message.answer_audio(audio=audio)
-        # removing file
-        os.remove(audio_path)
-    elif code == '480':
-        yt = YouTube(url)
-        stream = yt.streams.filter(file_extension='mp4', resolution='480p').first()
-        video_path = stream.download()
-        video = FSInputFile(video_path)
-        await callback_query.message.answer_video(video=video)
-        # removing file
-        os.remove(video_path)
-    elif code == '720':
-        yt = YouTube(url)
-        stream = yt.streams.filter(file_extension='mp4', resolution='720p').first()
-        video_path = stream.download()
-        video = FSInputFile(video_path)
-        await callback_query.message.answer_video(video=video)
-        # removing file
-        os.remove(video_path)
-    elif code == '1080':
-        yt = YouTube(url)
-        stream = yt.streams.filter(file_extension='mp4', resolution='1080p').first()
-        video_path = stream.download()
-        video = FSInputFile(video_path)
-        await callback_query.message.answer_video(video=video)
-        # removing file
-        os.remove(video_path)
+    try:
+        if code == 'mp3':
+            # downloading video using youTube link
+            yt = YouTube(url)
+            stream = yt.streams.get_audio_only()
+            audio_path = stream.download()
+            audio = FSInputFile(audio_path)
+            await callback_query.message.answer_audio(audio=audio)
+            # removing file
+            os.remove(audio_path)
+        elif code == '480':
+            yt = YouTube(url)
+            stream = yt.streams.filter(file_extension='mp4', resolution='480p').first()
+            video_path = stream.download()
+            video = FSInputFile(video_path)
+            await callback_query.message.answer_video(video=video)
+            # removing file
+            os.remove(video_path)
+        elif code == '720':
+            yt = YouTube(url)
+            stream = yt.streams.filter(file_extension='mp4', resolution='720p').first()
+            video_path = stream.download()
+            video = FSInputFile(video_path)
+            await callback_query.message.answer_video(video=video)
+            # removing file
+            os.remove(video_path)
+        elif code == '1080':
+            yt = YouTube(url)
+            stream = yt.streams.filter(file_extension='mp4', resolution='1080p').first()
+            video_path = stream.download()
+            video = FSInputFile(video_path)
+            await callback_query.message.answer_video(video=video)
+            # removing file
+            os.remove(video_path)
+    except pytube.exceptions.VideoUnavailable:
+        await callback_query.message.answer(text='sorry, your link does not work')
 
 
 # start command handler
