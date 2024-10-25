@@ -4,8 +4,8 @@ import sys
 import os
 import re
 
-import pytube.exceptions
-from pytube import YouTube
+import pytubefix.exceptions
+from pytubefix import YouTube
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -62,7 +62,7 @@ async def video_downloader(callback_query: CallbackQuery) -> None:
             await callback_query.message.answer_video(video=video)
             # removing file
             os.remove(video_path)
-    except pytube.exceptions.VideoUnavailable:
+    except pytubefix.exceptions.VideoUnavailable:
         await callback_query.message.answer(text='sorry, your link does not work')
 
 
